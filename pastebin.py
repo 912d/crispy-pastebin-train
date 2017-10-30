@@ -23,8 +23,9 @@ class pastebinScraper():
         return req.read()
 
     def scraper(self):
-        #Fetch most recent pastes
-        #Add ?limit=# to limit responses, max=250, default=50
+        #TODO XXX: 
+        # Download, and save (to database or file?) every paste
+        #   before they are removed ;)
         req = urllib2.urlopen('https://pastebin.com/api_scraping.php?limit=250',timeout=7)
         #document = etree.fromstring(req.read())
         x = req.read()
