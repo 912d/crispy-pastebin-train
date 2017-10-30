@@ -36,20 +36,17 @@ class pastebinScraper():
             passwd="password",
             db="db")
         cursor = conn.cursor()
-   
-        print "scrape url " + data[0]["scrape_url"]
-        print "fullurl " + data[0]["full_url"]
-        print "date " + data[0]["date"]
-        print "key " + data[0]["key"]
-        print "size " + data[0]["size"]
-        print "expire " + data[0]["expire"]
-        print "title " + data[0]["title"]
-        print "syntax " + data[0]["syntax"]
-        print "user " + data[0]["user"]
-        #print data[0]["key"], data[0]["title"], data[0]["date"], data[0]["user"], data[0]["size"], data[0]["syntax"], data[0]["full_url"],
-        cursor.execute("""INSERT INTO archive (scrape_url, full_url, date, key_something, size, expire, title, syntax, user) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
-(data[0]["scrape_url"], data[0]["full_url"], data[0]["date"], data[0]["key"], data[0]["size"], data[0]["expire"], data[0]["title"], data[0]["syntax"], data[0]["user"]))
+        conn.set_character_set('utf8')
+        cursor.execute('SET NAMES utf8;')
+        cursor.execute('SET CHARACTER SET utf8;')
+        cursor.execute('SET character_set_connection=utf8;')
+       
+        for d in range(250):
+            #print data[d]
+            cursor.execute("""INSERT INTO archive (scrape_url, full_url, date, key_something, size, expire, title, syntax, user) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+            (data[d]["scrape_url"], data[d]["full_url"], data[d]["date"], data[d]["key"], data[d]["size"], data[d]["expire"], data[d]["title"], data[d]["syntax"], data[d]["user"]))
         conn.commit()
+        #print data[0]["key"], data[0]["title"], data[0]["date"], data[0]["user"], data[0]["size"], data[0]["syntax"], data[0]["full_url"],
 
 try:
     paste = pastebinScraper()
