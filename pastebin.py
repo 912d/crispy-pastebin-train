@@ -5,12 +5,7 @@ import MySQLdb
 from lxml import etree
 import json
 from pprint import pprint
-import mysqlConnect
 
-#TODO: 
-# add insert into db
-#   add check duplicate pastes
-# 
 class pastebinScraper():
     #Class Variables
 
@@ -34,22 +29,31 @@ class pastebinScraper():
         #document = etree.fromstring(req.read())
         x = req.read()
         data = json.loads(x)
-        print json.dumps(x)
+        #print json.dumps(x)
         conn = MySQLdb.connect(
             host="host",
             user="user",
             passwd="password",
-            db="database")
+            db="db")
         cursor = conn.cursor()
-        #INSERT INTO archive (pid, title, date, user, size, syntax, text, last_crawl) VALUES ('" . $pid . "', '" . $title . "', '" . $date . "', '" . $user . "', '" . $size . "', '" . $syntax . "', '" . $text . "', '" . $last_crawl . "')";
-
-        cursor.execute("""INSERT INTO archive (pid, title, date, user, size, syntax, text, last_crawl) values (%s,%s,%s,%s,%s,%s,%s,%s)""", (data[0]["full_url"], data[0]["date"], data[0]["key"], data[0]["size"], data[0]["expire"], data[0]["title"], data[0]["syntax"], data[0]["user"]))
-        # cursor.execute("""INSERT INTO m1247_pastebin (full_url, date, key, size, expire, title, syntax, user) values (%s,%s,%s,%s,%s,%s,%s,%s)""", (data[0]["full_url"], data[0]["date"], data[0]["key"], data[0]["size"], data[0]["expire"], data[0]["title"], data[0]["syntax"], data[0]["user"]))
+   
+        print "scrape url " + data[0]["scrape_url"]
+        print "fullurl " + data[0]["full_url"]
+        print "date " + data[0]["date"]
+        print "key " + data[0]["key"]
+        print "size " + data[0]["size"]
+        print "expire " + data[0]["expire"]
+        print "title " + data[0]["title"]
+        print "syntax " + data[0]["syntax"]
+        print "user " + data[0]["user"]
+        #print data[0]["key"], data[0]["title"], data[0]["date"], data[0]["user"], data[0]["size"], data[0]["syntax"], data[0]["full_url"],
+        cursor.execute("""INSERT INTO archive (scrape_url, full_url, date, key_something, size, expire, title, syntax, user) values (%s,%s,%s,%s,%s,%s,%s,%s,%s)""",
+(data[0]["scrape_url"], data[0]["full_url"], data[0]["date"], data[0]["key"], data[0]["size"], data[0]["expire"], data[0]["title"], data[0]["syntax"], data[0]["user"]))
         conn.commit()
 
 try:
     paste = pastebinScraper()
-    print paste.scraper()
+    paste.scraper()
     #db = mysqlConnect()
     #print db.r()
 except Exception as e:
